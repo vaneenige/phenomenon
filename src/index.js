@@ -12,7 +12,7 @@ class Instance {
       uniforms: {},
       geometry: { vertices: [{ x: 0, y: 0, z: 0 }] },
       mode: 0,
-      modifiers: {}
+      modifiers: {},
     });
 
     // Assign optional parameters
@@ -41,7 +41,9 @@ class Instance {
    * Create a program.
    */
   prepareProgram() {
-    const { gl, vertex, fragment, compileShader } = this;
+    const {
+      gl, vertex, fragment,
+    } = this;
 
     // Create a new shader program
     const program = gl.createProgram();
@@ -162,12 +164,12 @@ class Instance {
     }
 
     // Update the shared uniforms from the renderer
-    Object.keys(renderUniforms).forEach(key => {
+    Object.keys(renderUniforms).forEach((key) => {
       uniforms[key].value = renderUniforms[key].value;
     });
 
     // Map the uniforms to the context
-    Object.keys(uniforms).forEach(key => {
+    Object.keys(uniforms).forEach((key) => {
       const { type, location, value } = uniforms[key];
       this.uniformMap[type](location, value);
     });
@@ -210,8 +212,8 @@ class Renderer {
           alpha: false,
           antialias: false,
         },
-        context
-      )
+        context,
+      ),
     );
 
     // Assign program parameters
@@ -266,7 +268,9 @@ class Renderer {
    * Handle resize events.
    */
   resize() {
-    const { gl, canvas, devicePixelRatio, position } = this;
+    const {
+      gl, canvas, devicePixelRatio, position,
+    } = this;
 
     canvas.width = canvas.clientWidth * devicePixelRatio;
     canvas.height = canvas.clientHeight * devicePixelRatio;
@@ -337,7 +341,7 @@ class Renderer {
 
     if (this.willRender) this.willRender(this);
 
-    this.instances.forEach(instance => {
+    this.instances.forEach((instance) => {
       instance.render(this.uniforms);
     });
 
@@ -352,9 +356,11 @@ class Renderer {
    * @param {object} instanceParams
    */
   add(key, settings) {
-    settings.uniforms = settings.uniforms || {};
+    const instanceSettings = settings;
+    const clonedUniforms = JSON.parse(JSON.stringify(this.uniforms));
 
-    settings.uniforms = Object.assign(settings.uniforms, JSON.parse(JSON.stringify(this.uniforms)));
+    instanceSettings.uniforms = settings.uniforms || {};
+    instanceSettings.uniforms = Object.assign(settings.uniforms, clonedUniforms);
 
     Object.assign(settings, {
       gl: this.gl,
