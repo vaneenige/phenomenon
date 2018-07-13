@@ -41,7 +41,7 @@ class Instance {
    * Create a program.
    */
   prepareProgram() {
-    const { gl, vertex, fragment, compileShader } = this;
+    const { gl, vertex, fragment } = this;
 
     // Create a new shader program
     const program = gl.createProgram();
