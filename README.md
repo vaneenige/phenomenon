@@ -65,7 +65,6 @@ Overrides that are used when getting the WebGL context from the canvas. The libr
 Type: `Object`<br/>
 Default: `{}`<br/>
 
-@TODO
 Overrides that can be used to alter the behaviour of the experience.
 
 | Name                                     | Value      | Default     | Description                                                                 |
@@ -138,6 +137,7 @@ Remove all instances and the renderer itself. The canvas element will remain in 
 5. <a href="https://codepen.io/cvaneenige/pen/wjXVgr">Shapes</a>
 6. <a href="https://codepen.io/cvaneenige/pen/MGBZpB">Instances</a>
 7. <a href="https://codepen.io/cvaneenige/pen/LmXWeM">Movement</a>
+8. <a href="https://codepen.io/cvaneenige/pen/QBwbEY">400K</a>
 
 ## Contribute
 
