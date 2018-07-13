@@ -30,27 +30,27 @@ class Instance {
    * @param {*} type
    * @param {*} source
    */
-  compileShader = (type, source) => {
+  compileShader(type, source) {
     const shader = this.gl.createShader(type);
     this.gl.shaderSource(shader, source);
     this.gl.compileShader(shader);
     return shader;
-  };
+  }
 
   /**
    * Create a program.
    */
-  prepareProgram = () => {
+  prepareProgram() {
     const { gl, vertex, fragment, compileShader } = this;
 
     // Create a new shader program
     const program = gl.createProgram();
 
     // Attach the vertex shader
-    gl.attachShader(program, compileShader(35633, vertex, gl));
+    gl.attachShader(program, this.compileShader(35633, vertex, gl));
 
     // Attach the fragment shader
-    gl.attachShader(program, compileShader(35632, fragment, gl));
+    gl.attachShader(program, this.compileShader(35632, fragment, gl));
 
     // Link the program
     gl.linkProgram(program);
@@ -60,23 +60,23 @@ class Instance {
 
     // Assign it to the instance
     this.program = program;
-  };
+  }
 
   /**
    * Create uniforms.
    */
-  prepareUniforms = () => {
+  prepareUniforms() {
     const keys = Object.keys(this.uniforms);
     for (let i = 0; i < keys.length; i += 1) {
       const location = this.gl.getUniformLocation(this.program, keys[i]);
       this.uniforms[keys[i]].location = location;
     }
-  };
+  }
 
   /**
    * Create buffer attributes.
    */
-  prepareAttributes = () => {
+  prepareAttributes() {
     const { geometry, attributes, multiplier } = this;
     const { vertices, normal } = geometry;
     const positionMap = ['x', 'y', 'z'];
@@ -117,12 +117,12 @@ class Instance {
       }
       this.attributes[i].data = attributeBufferData;
     }
-  };
+  }
 
   /**
    * Create a render buffer.
    */
-  prepareBuffers = () => {
+  prepareBuffers() {
     this.buffers = [];
 
     for (let i = 0; i < this.attributes.length; i += 1) {
@@ -138,13 +138,13 @@ class Instance {
 
       this.buffers.push({ buffer, location, size });
     }
-  };
+  }
 
   /**
    * Render the instance.
    * @param {*} renderUniforms
    */
-  render = renderUniforms => {
+  render(renderUniforms) {
     const { uniforms, multiplier, gl } = this;
 
     // Use the program of the instance
@@ -177,18 +177,18 @@ class Instance {
 
     // Execute the optional `will render` hook
     if (this.didRender) this.didRender(this);
-  };
+  }
 
   /**
    * Destroy the instance.
    */
-  destroy = () => {
+  destroy() {
     for (let i = 0; i < this.buffers.length; i += 1) {
       this.gl.deleteBuffer(this.buffers.buffer);
     }
     this.gl.deleteProgram(this.program);
     this.gl = null;
-  };
+  }
 }
 
 /**
@@ -255,7 +255,7 @@ class Renderer {
     }
 
     // Handle resize events
-    window.addEventListener('resize', this.resize);
+    window.addEventListener('resize', () => this.resize());
 
     // Start the renderer
     this.resize();
@@ -265,7 +265,7 @@ class Renderer {
   /**
    * Handle resize events.
    */
-  resize = () => {
+  resize() {
     const { gl, canvas, devicePixelRatio, position } = this;
 
     canvas.width = canvas.clientWidth * devicePixelRatio;
@@ -317,22 +317,22 @@ class Renderer {
       type: 'mat4',
       value: modelMatrix,
     };
-  };
+  }
 
   /**
    * Toggle the active state of the renderer.
    * @param {bool} shouldRender
    */
-  toggle = shouldRender => {
+  toggle(shouldRender) {
     if (shouldRender === this.shouldRender) return;
     this.shouldRender = typeof shouldRender !== 'undefined' ? shouldRender : !this.shouldRender;
     if (this.shouldRender) this.render();
-  };
+  }
 
   /**
    * Render the total scene.
    */
-  render = () => {
+  render() {
     this.gl.clear(16640);
 
     if (this.willRender) this.willRender(this);
@@ -343,15 +343,15 @@ class Renderer {
 
     if (this.didRender) this.didRender(this);
 
-    if (this.shouldRender) requestAnimationFrame(this.render);
-  };
+    if (this.shouldRender) requestAnimationFrame(() => this.render());
+  }
 
   /**
    * Add an instance to the renderer.
    * @param {string} key
    * @param {object} instanceParams
    */
-  add = (key, settings) => {
+  add(key, settings) {
     settings.uniforms = settings.uniforms || {};
 
     settings.uniforms = Object.assign(settings.uniforms, JSON.parse(JSON.stringify(this.uniforms)));
@@ -363,28 +363,28 @@ class Renderer {
 
     const instance = new Instance(settings);
     this.instances.set(key, instance);
-  };
+  }
 
   /**
    * Remove an instance from the renderer.
    * @param {string} key
    */
-  remove = key => {
+  remove(key) {
     const instance = this.instances.get(key);
     if (typeof instance === 'undefined') return;
     instance.destroy();
     this.instances.delete(key);
-  };
+  }
 
   /**
    * Destroy the renderer and its instances.
    */
-  destroy = () => {
+  destroy() {
     this.instances.forEach((instance, key) => {
       instance.destroy();
       this.instances.delete(key);
     });
-  };
+  }
 }
 
 export default Renderer;
