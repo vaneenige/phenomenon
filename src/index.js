@@ -74,7 +74,7 @@ class Instance {
   }
 
   /**
-   * Creare buffer attributes.
+   * Create buffer attributes.
    */
   prepareAttributes() {
     const { geometry, attributes, multiplier } = this;
