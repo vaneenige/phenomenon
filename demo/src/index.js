@@ -2,7 +2,7 @@
 import Phenomenon from './../../src/index.js';
 
 // Import optional utils
-import { getRandom, rotateX, rotateY } from './utils';
+import { getRandom, rotateX, rotateY } from './utils.js';
 
 // The amount of particles that will be created
 const multiplier = 400000;
