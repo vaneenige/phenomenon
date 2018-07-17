@@ -88,32 +88,44 @@ class Instance {
         size: 3,
       });
     }
-
     if (typeof normal !== 'undefined') {
       this.attributes.push({
         name: 'aNormal',
         size: 3,
       });
     }
+    // Convert all attributes to be useable in the shader
     for (let i = 0; i < attributes.length; i += 1) {
+      // Obtain the current attribute
       const attribute = attributes[i];
+      // Create an array for the attribute to store data
       const attributeBufferData = new Float32Array(multiplier * vertices.length * attribute.size);
+      // Repeat the process for the provided multiplier
       for (let j = 0; j < multiplier; j += 1) {
+        // Set data used as default or the attribute modifier
         const data = attribute.data && attribute.data(j, multiplier);
+        // Calculate the offset for the right place in the array
         let offset = j * vertices.length * attribute.size;
+        // Loop over vertices length
         for (let k = 0; k < vertices.length; k += 1) {
+          // Loop over attribute size
           for (let l = 0; l < attribute.size; l += 1) {
-            offset += 1;
+            // Check if a modifier is provided
             const modifier = this.modifiers[attribute.name];
             if (typeof modifier !== 'undefined') {
-              attributeBufferData[offset - 1] = modifier(data, k, l, this);
+              // Handle attribute modifier
+              attributeBufferData[offset] = modifier(data, k, l, this);
             } else if (attribute.name === 'aPosition') {
-              attributeBufferData[offset - 1] = vertices[k][positionMap[l]];
+              // Handle position values
+              attributeBufferData[offset] = vertices[k][positionMap[l]];
             } else if (attribute.name === 'aNormal') {
-              attributeBufferData[offset - 1] = normal[k][positionMap[l]];
+              // Handle normal values
+              attributeBufferData[offset] = normal[k][positionMap[l]];
             } else {
-              attributeBufferData[offset - 1] = data[l];
+              // Handle other attributes
+              attributeBufferData[offset] = data[l];
             }
+            offset += 1;
           }
         }
       }
