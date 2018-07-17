@@ -45,19 +45,14 @@ class Instance {
       gl, vertex, fragment,
     } = this;
 
-    // Create a new shader program
     const program = gl.createProgram();
 
-    // Attach the vertex shader
     gl.attachShader(program, this.compileShader(35633, vertex, gl));
 
-    // Attach the fragment shader
     gl.attachShader(program, this.compileShader(35632, fragment, gl));
 
-    // Link the program
     gl.linkProgram(program);
 
-    // Use the program
     gl.useProgram(program);
 
     // Assign it to the instance
@@ -149,10 +144,8 @@ class Instance {
   render(renderUniforms) {
     const { uniforms, multiplier, gl } = this;
 
-    // Use the program of the instance
     gl.useProgram(this.program);
 
-    // Execute the optional `will render` hook
     if (this.willRender) this.willRender(this);
 
     // Bind the buffers for the instance
@@ -246,7 +239,6 @@ class Renderer {
       mat4: (loc, val) => gl.uniformMatrix4fv(loc, false, val),
     };
 
-    // Enable depth
     gl.enable(gl.DEPTH_TEST);
     gl.depthFunc(gl.LEQUAL);
 
