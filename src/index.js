@@ -357,10 +357,11 @@ class Renderer {
    */
   add(key, settings) {
     const instanceSettings = settings;
-    const clonedUniforms = JSON.parse(JSON.stringify(this.uniforms));
 
-    instanceSettings.uniforms = settings.uniforms || {};
-    instanceSettings.uniforms = Object.assign(settings.uniforms, clonedUniforms);
+    instanceSettings.uniforms = Object.assign(
+      settings.uniforms || {},
+      JSON.parse(JSON.stringify(this.uniforms)),
+    );
 
     Object.assign(settings, {
       gl: this.gl,
