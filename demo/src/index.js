@@ -20,34 +20,13 @@ const step = 0.01;
 // Multiplier of the canvas resolution
 const devicePixelRatio = 1;
 
-// Every uniform must have:
-// - Key (used in the shader)
-// - Type (what kind of value)
-// - Value (based on the type)
-const uniforms = {
-  uProgress: {
-    type: 'float',
-    value: 0.0,
-  },
-};
-
-// Boolean to switch transition direction
-let forward = true;
-
 // Create the renderer
 const phenomenon = new Phenomenon({
   settings: {
     devicePixelRatio,
     position: { x: 0, y: 0, z: 3 },
-    uniforms,
     willRender: (r) => {
-      const { uProgress, uModelMatrix } = r.uniforms;
-      uProgress.value += forward ? step : -step;
-
-      if (uProgress.value >= 1) forward = false;
-      else if (uProgress.value <= 0) forward = true;
-
-      rotateY(uModelMatrix.value, step * 2);
+      rotateY(r.uniforms.uModelMatrix.value, step * 2);
     },
   },
 });
@@ -104,6 +83,17 @@ function addInstance() {
     },
   ];
 
+  // Every uniform must have:
+  // - Key (used in the shader)
+  // - Type (what kind of value)
+  // - Value (based on the type)
+  const uniforms = {
+    uProgress: {
+      type: 'float',
+      value: 0.0,
+    },
+  };
+
   // Vertex shader used to calculate the position
   const vertex = `
     attribute vec3 aPositionStart;
@@ -145,12 +135,23 @@ function addInstance() {
     }
   `;
 
+  // Boolean to switch transition direction
+  let forward = true;
+
   // Add an instance to the renderer
   phenomenon.add(count, {
     attributes,
     multiplier,
     vertex,
     fragment,
+    uniforms,
+    willRender: (r) => {
+      const { uProgress } = r.uniforms;
+      uProgress.value += forward ? step : -step;
+
+      if (uProgress.value >= 1) forward = false;
+      else if (uProgress.value <= 0) forward = true;
+    },
   });
 }
 
@@ -164,5 +165,8 @@ document.querySelector('.add').addEventListener('click', addInstance);
 document.querySelector('.remove').addEventListener('click', removeInstance);
 
 for (let i = 0; i < 20; i += 1) {
-  addInstance();
+  // Delay the creation of each instance
+  setTimeout(() => {
+    addInstance();
+  }, 100 * i);
 }
