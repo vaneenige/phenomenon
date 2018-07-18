@@ -51,12 +51,12 @@ const plugins = [
    */
   eslint({ throwOnError: true }),
   /**
-   * Convert ES2015 with buble.
-   * @see https://github.com/rollup/rollup-plugin-buble
+   * Convert ES2015 with babel.
+   * @see https://github.com/rollup/rollup-plugin-babel
    */
   babel({
     babelrc: false,
-    presets: [['env', { loose: true, modules: false }], 'stage-0'],
+    presets: [['env', { loose: true, modules: false }]],
     plugins: ['external-helpers'],
   }),
 ];
