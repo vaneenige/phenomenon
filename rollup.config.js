@@ -56,7 +56,7 @@ const plugins = [
    */
   babel({
     babelrc: false,
-    presets: [['es2015', { loose: true, modules: false }], 'stage-0'],
+    presets: [['env', { loose: true, modules: false }], 'stage-0'],
     plugins: ['external-helpers'],
   }),
 ];
