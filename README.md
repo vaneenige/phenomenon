@@ -130,14 +130,15 @@ Remove all instances and the renderer itself. The canvas element will remain in 
 
 ## Examples
 
-1. <a href="https://codepen.io/cvaneenige/pen/odpVPW">Particles</a>
-2. <a href="https://codepen.io/cvaneenige/pen/GdGpaN">Types</a>
-3. <a href="https://codepen.io/cvaneenige/pen/Lmrzmd">Transition</a>
-4. <a href="https://codepen.io/cvaneenige/pen/zjaydg">Easing</a>
-5. <a href="https://codepen.io/cvaneenige/pen/wjXVgr">Shapes</a>
-6. <a href="https://codepen.io/cvaneenige/pen/MGBZpB">Instances</a>
-7. <a href="https://codepen.io/cvaneenige/pen/LmXWeM">Movement</a>
-8. <a href="https://codepen.io/cvaneenige/pen/QBwbEY">400K</a>
+1. <a href="https://codepen.io/cvaneenige/full/odpVPW">Particles</a>
+2. <a href="https://codepen.io/cvaneenige/full/GdGpaN">Types</a>
+3. <a href="https://codepen.io/cvaneenige/full/Lmrzmd">Transition</a>
+4. <a href="https://codepen.io/cvaneenige/full/zjaydg">Easing</a>
+5. <a href="https://codepen.io/cvaneenige/full/wjXVgr">Shapes</a>
+6. <a href="https://codepen.io/cvaneenige/full/MGBZpB">Instances</a>
+7. <a href="https://codepen.io/cvaneenige/full/LmXWeM">Movement</a>
+8. <a href="https://codepen.io/cvaneenige/full/QBwbEY">Particle cube</a>
+9. <a href="https://codepen.io/cvaneenige/full/ajNjaN">Dynamic intances</a>
 
 ## Contribute
 
