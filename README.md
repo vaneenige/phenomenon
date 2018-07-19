@@ -108,11 +108,11 @@ An object containing overrides for parameters that are used when getting the Web
 
 | Name        | Value      | Default  | Description                                                                 |
 | ----------- | ---------- | -------- | --------------------------------------------------------------------------- |
-| attributes  | `array`    | -        | Values used in the program that are stored once, directly on the GPU.       |
+| attributes  | `array`    | `[]`     | Values used in the program that are stored once, directly on the GPU.       |
 | uniforms    | `object`   | `{}`     | Values used in the program that can be updated on the fly.                  |
 | vertex      | `string`   | -        | The vertex shader is used to position the geometry in 3D space.             |
 | fragment    | `string`   | -        | The fragment shader is used to provide the geometry with color or texture.  |
-| multiplier  | `number`   | -        | The amount of duplicates that will be created for the same instance.        |
+| multiplier  | `number`   | `1`      | The amount of duplicates that will be created for the same instance.        |
 | geometry    | `object`   | `{}`     | Vertices (and optional normals) of a model.                                 |
 | modifiers   | `object`   | `{}`     | Modifiers to alter the attributes data on initialize.                       |
 | willRender  | `function` | `null`   | A render hook that is invoked every frame before the instance is rendered.  |

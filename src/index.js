@@ -13,6 +13,8 @@ class Instance {
       geometry: { vertices: [{ x: 0, y: 0, z: 0 }] },
       mode: 0,
       modifiers: {},
+      attributes: [],
+      multiplier: 1,
     });
 
     // Assign optional parameters
@@ -215,7 +217,7 @@ class Renderer {
    * @param {object} [context={}] - Options used when getting the context.
    * @param {object} [settings={}] - Options used when creating the renderer.
    */
-  constructor({ canvas = document.querySelector('canvas'), context = {}, settings = {} }) {
+  constructor({ canvas = document.querySelector('canvas'), context = {}, settings = {} } = {}) {
     // Get context with optional parameters
     const gl = canvas.getContext(
       'webgl',
