@@ -29,8 +29,8 @@ class Instance {
 
   /**
    * Compile a shader.
-   * @param {*} type
-   * @param {*} source
+   * @param {number} type
+   * @param {string} source
    */
   compileShader(type, source) {
     const shader = this.gl.createShader(type);
@@ -51,10 +51,10 @@ class Instance {
     const program = gl.createProgram();
 
     // Attach the vertex shader
-    gl.attachShader(program, this.compileShader(35633, vertex, gl));
+    gl.attachShader(program, this.compileShader(35633, vertex));
 
     // Attach the fragment shader
-    gl.attachShader(program, this.compileShader(35632, fragment, gl));
+    gl.attachShader(program, this.compileShader(35632, fragment));
 
     // Link the program
     gl.linkProgram(program);
@@ -158,7 +158,7 @@ class Instance {
 
   /**
    * Render the instance.
-   * @param {*} renderUniforms
+   * @param {object} renderUniforms
    */
   render(renderUniforms) {
     const { uniforms, multiplier, gl } = this;
