@@ -113,6 +113,7 @@ An object containing overrides for parameters that are used when getting the Web
 | vertex      | `string`   | -        | The vertex shader is used to position the geometry in 3D space.             |
 | fragment    | `string`   | -        | The fragment shader is used to provide the geometry with color or texture.  |
 | multiplier  | `number`   | `1`      | The amount of duplicates that will be created for the same instance.        |
+| mode        | `number`   | `0`      | The way the instance will be rendered. Particles = 0, triangles = 4.        |
 | geometry    | `object`   | `{}`     | Vertices (and optional normals) of a model.                                 |
 | modifiers   | `object`   | `{}`     | Modifiers to alter the attributes data on initialize.                       |
 | willRender  | `function` | `null`   | A render hook that is invoked every frame before the instance is rendered.  |
