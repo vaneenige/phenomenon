@@ -166,9 +166,6 @@ class Instance {
     // Use the program of the instance
     gl.useProgram(this.program);
 
-    // Execute the optional `will render` hook
-    if (this.willRender) this.willRender(this);
-
     // Bind the buffers for the instance
     for (let i = 0; i < this.buffers.length; i += 1) {
       const { location, buffer, size } = this.buffers[i];
@@ -191,8 +188,8 @@ class Instance {
     // Draw the magic to the screen
     gl.drawArrays(this.mode, 0, multiplier * this.geometry.vertices.length);
 
-    // Execute the optional `will render` hook
-    if (this.didRender) this.didRender(this);
+    // Hook for uniform updates
+    if (this.onRender) this.onRender(this);
   }
 
   /**
@@ -275,6 +272,9 @@ class Renderer {
       gl.clearColor(...this.clearColor);
       gl.clearDepth(1.0);
     }
+
+    // Hook for gl context changes before first render
+    if (this.onSetup) this.onSetup(gl);
 
     // Handle resize events
     window.addEventListener('resize', () => this.resize());
@@ -359,13 +359,11 @@ class Renderer {
   render() {
     this.gl.clear(16640);
 
-    if (this.willRender) this.willRender(this);
-
     this.instances.forEach((instance) => {
       instance.render(this.uniforms);
     });
 
-    if (this.didRender) this.didRender(this);
+    if (this.onRender) this.onRender(this);
 
     if (this.shouldRender) requestAnimationFrame(() => this.render());
   }

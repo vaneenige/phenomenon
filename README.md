@@ -79,14 +79,15 @@ Default: `{}`<br/>
 
 Overrides that can be used to alter the behaviour of the experience.
 
-| Name                                     | Value      | Default     | Description                                                                 |
-| ---------------------------------------- | ---------- | ----------- | --------------------------------------------------------------------------- |
-| devicePixelRatio                         | `number`   | `1`         | The resolution multiplier by which the scene is rendered relative to the canvas' resolution. Use `window.devicePixelRatio` for the highest possible quality, `1` for the best performance. |
-| clearColor                               | `array`    | `[1,1,1,1]` | The color in `rgba` that is used as the background of the scene. |
-| position                                     | `number`   | `{x:0,y:0,z:2}`         | The distance in 3D space between the center of the scene and the camera. |
-| shouldRender                             | `boolean`  | `true`      | A boolean indicating whether the scene should start rendering automatically. |
-| uniforms                                 | `object`   | `{}`        | Shared values between all instances that can be updated at any given moment. By default this feature is used to render all the instances with the same `uProjectionMatrix`, `uModelMatrix` and `uViewMatrix`. It's also useful for moving everything around with the same progress value; `uProgress`. |
-| willRender(renderer) didRender(renderer) | `function` | `undefined` | A render hook that is invoked every frame before / after the scene is rendered to the screen. Use this to update `renderer.uniforms`. |
+| Name                                     | Value      | Default         | Description                                                                 |
+| ---------------------------------------- | ---------- | --------------- | --------------------------------------------------------------------------- |
+| devicePixelRatio                         | `number`   | `1`             | The resolution multiplier by which the scene is rendered relative to the canvas' resolution. Use `window.devicePixelRatio` for the highest possible quality, `1` for the best performance. |
+| clearColor                               | `array`    | `[1,1,1,1]`     | The color in `rgba` that is used as the background of the scene. |
+| position                                 | `number`   | `{x:0,y:0,z:2}` | The distance in 3D space between the center of the scene and the camera. |
+| shouldRender                             | `boolean`  | `true`          | A boolean indicating whether the scene should start rendering automatically. |
+| uniforms                                 | `object`   | `{}`            | Shared values between all instances that can be updated at any given moment. By default this feature is used to render all the instances with the same `uProjectionMatrix`, `uModelMatrix` and `uViewMatrix`. It's also useful for moving everything around with the same progress value; `uProgress`. |
+| onSetup(gl)                              | `function` | `undefined`     | A setup hook that is called before first render which can be used for gl context changes. |
+| onRender(renderer)                       | `function` | `undefined`     | A render hook that is invoked after every rendered frame. Use this to update `renderer.uniforms`. |
 
 ### .resize()
 
@@ -118,18 +119,17 @@ Default: `{}`<br/>
 
 An object containing overrides for parameters that are used when getting the WebGL context from the canvas.
 
-| Name        | Value      | Default  | Description                                                                 |
-| ----------- | ---------- | -------- | --------------------------------------------------------------------------- |
-| attributes  | `array`    | `[]`     | Values used in the program that are stored once, directly on the GPU.       |
-| uniforms    | `object`   | `{}`     | Values used in the program that can be updated on the fly.                  |
-| vertex      | `string`   | -        | The vertex shader is used to position the geometry in 3D space.             |
-| fragment    | `string`   | -        | The fragment shader is used to provide the geometry with color or texture.  |
-| multiplier  | `number`   | `1`      | The amount of duplicates that will be created for the same instance.        |
-| mode        | `number`   | `0`      | The way the instance will be rendered. Particles = 0, triangles = 4.        |
-| geometry    | `object`   | `{}`     | Vertices (and optional normals) of a model.                                 |
-| modifiers   | `object`   | `{}`     | Modifiers to alter the attributes data on initialize.                       |
-| willRender  | `function` | `null`   | A render hook that is invoked every frame before the instance is rendered.  |
-| didRender   | `function` | `null`   | A render hook that is invoked every frame after the instance is rendered.   |
+| Name        | Value      | Default      | Description                                                                 |
+| ----------- | ---------- | ------------ | --------------------------------------------------------------------------- |
+| attributes  | `array`    | `[]`         | Values used in the program that are stored once, directly on the GPU.       |
+| uniforms    | `object`   | `{}`         | Values used in the program that can be updated on the fly.                  |
+| vertex      | `string`   | -            | The vertex shader is used to position the geometry in 3D space.             |
+| fragment    | `string`   | -            | The fragment shader is used to provide the geometry with color or texture.  |
+| multiplier  | `number`   | `1`          | The amount of duplicates that will be created for the same instance.        |
+| mode        | `number`   | `0`          | The way the instance will be rendered. Particles = 0, triangles = 4.        |
+| geometry    | `object`   | `{}`         | Vertices (and optional normals) of a model.                                 |
+| modifiers   | `object`   | `{}`         | Modifiers to alter the attributes data on initialize.                       |
+| onRender    | `function` | `undefined`  | A render hook that is invoked after every rendered frame.                   |
 
 > Note: Less instances with a higher multiplier will be faster than more instances with a lower multiplier!
 

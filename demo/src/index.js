@@ -25,7 +25,7 @@ const phenomenon = new Phenomenon({
   settings: {
     devicePixelRatio,
     position: { x: 0, y: 0, z: 3 },
-    willRender: (r) => {
+    onRender: (r) => {
       rotateY(r.uniforms.uModelMatrix.value, step * 2);
     },
   },
@@ -145,7 +145,7 @@ function addInstance() {
     vertex,
     fragment,
     uniforms,
-    willRender: (r) => {
+    onRender: (r) => {
       const { uProgress } = r.uniforms;
       uProgress.value += forward ? step : -step;
 
