@@ -67,6 +67,12 @@ Overrides that are used when getting the WebGL context from the canvas. The libr
 
 > Read more about all the possible overrides on <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/getContext">MDN</a>.
 
+#### options.contextType
+Type: `String` <br/>
+Default: `webgl`
+
+The context identifier defining the drawing context associated to the canvas. For WebGL 2.0 use `webgl2`.
+
 #### options.settings
 Type: `Object`<br/>
 Default: `{}`<br/>
