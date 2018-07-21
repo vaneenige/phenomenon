@@ -9,7 +9,8 @@
     "build": "npm run es && npm run iife",
     "es": "rollup -c -f es -o $npm_package_main && gzip-size $npm_package_main",
     "iife": "rollup -c -f iife -o $npm_package_unpkg && gzip-size $npm_package_unpkg",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "test": "karmatic"
   },
   "repository": {
     "type": "git",
@@ -38,16 +39,19 @@
     "eslint-config-airbnb-base": "^13.0.0",
     "eslint-plugin-import": "^2.13.0",
     "gzip-size-cli": "^3.0.0",
+    "karmatic": "^1.2.0",
     "rollup": "^0.62.0",
     "rollup-plugin-babel": "^3.0.7",
     "rollup-plugin-eslint": "^4.0.0",
     "rollup-plugin-serve": "^0.4.2",
-    "rollup-plugin-uglify": "^3.0.0"
+    "rollup-plugin-uglify": "^3.0.0",
+    "webpack": "^4.16.1"
   },
   "eslintConfig": {
     "extends": "airbnb-base",
     "env": {
-      "browser": true
+      "browser": true,
+      "mocha": true
     }
   }
 }
