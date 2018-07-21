@@ -369,7 +369,7 @@ class Renderer {
    * @param {string} key
    * @param {object} instanceParams
    */
-  add(key, settings) {
+  add(key, settings = {}) {
     const instanceSettings = settings;
 
     instanceSettings.uniforms = Object.assign(
@@ -384,6 +384,8 @@ class Renderer {
 
     const instance = new Instance(settings);
     this.instances.set(key, instance);
+
+    return instance;
   }
 
   /**
@@ -405,6 +407,7 @@ class Renderer {
       instance.destroy();
       this.instances.delete(key);
     });
+    this.toggle(false);
   }
 }
 
