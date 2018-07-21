@@ -62,14 +62,9 @@ describe('phenomenon', () => {
 
     describe('render()', () => {
       it('should call the render hooks if provided', (done) => {
-        let willRender = false;
         phenomenon = new Phenomenon({
           settings: {
-            willRender: () => {
-              willRender = true;
-            },
-            didRender: () => {
-              expect(willRender).toBe(true);
+            onRender: () => {
               done();
             },
           },
