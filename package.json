@@ -5,7 +5,7 @@
   "main": "dist/phenomenon.es.js",
   "unpkg": "dist/phenomenon.iife.js",
   "scripts": {
-    "demo": "DEBUG=true rollup -c -w",
+    "demo": "cross-env DEBUG=true rollup -c -w",
     "build": "npm run es && npm run iife",
     "es": "rollup -c -f es -o $npm_package_main && gzip-size $npm_package_main",
     "iife": "rollup -c -f iife -o $npm_package_unpkg && gzip-size $npm_package_unpkg",
@@ -35,6 +35,7 @@
     "babel-core": "^6.26.3",
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-preset-env": "^1.7.0",
+    "cross-env": "^5.2.0",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^13.0.0",
     "eslint-plugin-import": "^2.13.0",
