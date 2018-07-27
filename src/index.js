@@ -211,14 +211,14 @@ class Renderer {
   /**
    * Create a renderer.
    * @param {HTMLElement} canvas - The element on which the scene will be rendered.
-   * @param {object} [context={}] - Options used when getting the context.
-   * @param {string} [contextType='webgl'] - The context identifier defining the drawing context.
-   * @param {object} [settings={}] - Options used when creating the renderer.
+   * @param {object} context - Options used when getting the context.
+   * @param {string} contextType - The context identifier defining the drawing context.
+   * @param {object} settings - Options used when creating the renderer.
    */
   constructor({
     canvas = document.querySelector('canvas'),
     context = {},
-    contextType = 'webgl',
+    contextType = 'experimental-webgl',
     settings = {},
   } = {}) {
     // Get context with optional parameters
