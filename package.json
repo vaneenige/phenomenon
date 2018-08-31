@@ -8,8 +8,9 @@
     "start": "http-server demo --silent & npm run watch",
     "watch": "microbundle watch --format umd --entry demo/src/index.js --output demo/dist/bundle.js",
     "build": "microbundle --name Phenomenon --format es,umd --sourcemap false",
-    "prepare": "npm run build",
-    "test": "karmatic"
+    "eslint": "eslint src/index.js",
+    "test": "karmatic",
+    "prepare": "npm run eslint && npm run test && npm run build"
   },
   "repository": {
     "type": "git",
@@ -36,7 +37,8 @@
     "eslint-plugin-import": "^2.13.0",
     "http-server": "^0.11.1",
     "karmatic": "^1.2.0",
-    "microbundle": "^0.6.0"
+    "microbundle": "^0.6.0",
+    "webpack": "^4.17.1"
   },
   "eslintConfig": {
     "extends": "airbnb-base",
