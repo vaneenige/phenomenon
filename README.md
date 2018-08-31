@@ -3,7 +3,7 @@
 
 [![npm version](https://img.shields.io/npm/v/phenomenon.svg)](https://www.npmjs.com/package/phenomenon)
 [![travis build](https://img.shields.io/travis/vaneenige/phenomenon.svg)](https://travis-ci.org/vaneenige/phenomenon)
-[![gzip size](http://img.badgesize.io/https://unpkg.com/phenomenon/dist/phenomenon.es.js?compression=gzip)](https://unpkg.com/phenomenon)
+[![gzip size](http://img.badgesize.io/https://unpkg.com/phenomenon/dist/phenomenon.umd.js?compression=gzip)](https://unpkg.com/phenomenon)
 [![license](https://img.shields.io/npm/l/phenomenon.svg)](https://github.com/vaneenige/phenomenon/blob/master/LICENSE)
 [![dependencies](https://img.shields.io/badge/dependencies-none-ff69b4.svg)](https://github.com/vaneenige/phenomenon/blob/master/package.json)
 
