@@ -158,7 +158,7 @@ Remove all instances and the renderer itself. The canvas element will remain in 
 Are you excited about this library and have interesting ideas on how to improve it? Please tell me or contribute directly! 🙌
 
 ```
-npm install > npm run demo > http://localhost:8080
+npm install > npm start > http://localhost:8080
 ```
 
 ## License
