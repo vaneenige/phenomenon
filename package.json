@@ -32,19 +32,38 @@
     "shaders"
   ],
   "devDependencies": {
-    "eslint": "^4.19.1",
+    "eslint": "^5.9.0",
     "eslint-config-airbnb-base": "^13.0.0",
+    "eslint-config-prettier": "^3.3.0",
     "eslint-plugin-import": "^2.13.0",
+    "eslint-plugin-prettier": "^3.0.0",
     "http-server": "^0.11.1",
     "karmatic": "^1.2.0",
-    "microbundle": "^0.6.0",
+    "microbundle": "^0.7.0",
+    "prettier": "^1.15.2",
     "webpack": "^4.17.1"
   },
   "eslintConfig": {
-    "extends": "airbnb-base",
+    "extends": [
+      "airbnb-base",
+      "prettier"
+    ],
+    "plugins": [
+      "prettier"
+    ],
+    "rules": {
+      "linebreak-style": "off",
+      "prettier/prettier": [
+        "error"
+      ]
+    },
     "env": {
       "browser": true,
       "mocha": true
     }
+  },
+  "prettier": {
+    "printWidth": 100,
+    "singleQuote": true
   }
 }

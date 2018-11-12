@@ -14,7 +14,7 @@ class Instance {
       mode: 0,
       modifiers: {},
       attributes: [],
-      multiplier: 1,
+      multiplier: 1
     });
 
     // Assign optional parameters
@@ -43,9 +43,7 @@ class Instance {
    * Create a program.
    */
   prepareProgram() {
-    const {
-      gl, vertex, fragment,
-    } = this;
+    const { gl, vertex, fragment } = this;
 
     // Create a new shader program
     const program = gl.createProgram();
@@ -87,13 +85,13 @@ class Instance {
     if (typeof vertices !== 'undefined') {
       this.attributes.push({
         name: 'aPosition',
-        size: 3,
+        size: 3
       });
     }
     if (typeof normal !== 'undefined') {
       this.attributes.push({
         name: 'aNormal',
-        size: 3,
+        size: 3
       });
     }
     // Convert all attributes to be useable in the shader
@@ -175,12 +173,12 @@ class Instance {
     }
 
     // Update the shared uniforms from the renderer
-    Object.keys(renderUniforms).forEach((key) => {
+    Object.keys(renderUniforms).forEach(key => {
       uniforms[key].value = renderUniforms[key].value;
     });
 
     // Map the uniforms to the context
-    Object.keys(uniforms).forEach((key) => {
+    Object.keys(uniforms).forEach(key => {
       const { type, location, value } = uniforms[key];
       this.uniformMap[type](location, value);
     });
@@ -219,7 +217,7 @@ class Renderer {
     canvas = document.querySelector('canvas'),
     context = {},
     contextType = 'experimental-webgl',
-    settings = {},
+    settings = {}
   } = {}) {
     // Get context with optional parameters
     const gl = canvas.getContext(
@@ -227,10 +225,10 @@ class Renderer {
       Object.assign(
         {
           alpha: false,
-          antialias: false,
+          antialias: false
         },
-        context,
-      ),
+        context
+      )
     );
 
     // Assign program parameters
@@ -239,14 +237,14 @@ class Renderer {
       canvas,
       uniforms: {},
       instances: new Map(),
-      shouldRender: true,
+      shouldRender: true
     });
 
     // Assign default parameters
     Object.assign(this, {
       devicePixelRatio: 1,
       clearColor: [1, 1, 1, 1],
-      position: { x: 0, y: 0, z: 2 },
+      position: { x: 0, y: 0, z: 2 }
     });
 
     // Assign optional parameters
@@ -260,7 +258,7 @@ class Renderer {
       vec4: (loc, val) => gl.uniform4fv(loc, val),
       mat2: (loc, val) => gl.uniformMatrix2fv(loc, false, val),
       mat3: (loc, val) => gl.uniformMatrix3fv(loc, false, val),
-      mat4: (loc, val) => gl.uniformMatrix4fv(loc, false, val),
+      mat4: (loc, val) => gl.uniformMatrix4fv(loc, false, val)
     };
 
     // Enable depth
@@ -288,9 +286,7 @@ class Renderer {
    * Handle resize events.
    */
   resize() {
-    const {
-      gl, canvas, devicePixelRatio, position,
-    } = this;
+    const { gl, canvas, devicePixelRatio, position } = this;
 
     canvas.width = canvas.clientWidth * devicePixelRatio;
     canvas.height = canvas.clientHeight * devicePixelRatio;
@@ -329,17 +325,17 @@ class Renderer {
 
     this.uniforms.uProjectionMatrix = {
       type: 'mat4',
-      value: projectionMatrix,
+      value: projectionMatrix
     };
 
     this.uniforms.uViewMatrix = {
       type: 'mat4',
-      value: viewMatrix,
+      value: viewMatrix
     };
 
     this.uniforms.uModelMatrix = {
       type: 'mat4',
-      value: modelMatrix,
+      value: modelMatrix
     };
   }
 
@@ -359,7 +355,7 @@ class Renderer {
   render() {
     this.gl.clear(16640);
 
-    this.instances.forEach((instance) => {
+    this.instances.forEach(instance => {
       instance.render(this.uniforms);
     });
 
@@ -378,12 +374,12 @@ class Renderer {
 
     instanceSettings.uniforms = Object.assign(
       settings.uniforms || {},
-      JSON.parse(JSON.stringify(this.uniforms)),
+      JSON.parse(JSON.stringify(this.uniforms))
     );
 
     Object.assign(settings, {
       gl: this.gl,
-      uniformMap: this.uniformMap,
+      uniformMap: this.uniformMap
     });
 
     const instance = new Instance(settings);

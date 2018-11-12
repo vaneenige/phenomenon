@@ -2,17 +2,12 @@
 import Phenomenon from '../../src/index';
 
 // Import optional utils
-import {
-  getRandom, rgbToHsl, rotateY,
-} from './utils';
+import { getRandom, rgbToHsl, rotateY } from './utils';
 
 // Material colors in HSL
-const colors = [
-  [255, 108, 0],
-  [83, 109, 254],
-  [29, 233, 182],
-  [253, 216, 53],
-].map(color => rgbToHsl(color));
+const colors = [[255, 108, 0], [83, 109, 254], [29, 233, 182], [253, 216, 53]].map(color =>
+  rgbToHsl(color)
+);
 
 // Update value for every frame
 const step = 0.01;
@@ -25,10 +20,10 @@ const phenomenon = new Phenomenon({
   settings: {
     devicePixelRatio,
     position: { x: 0, y: 0, z: 3 },
-    onRender: (r) => {
+    onRender: r => {
       rotateY(r.uniforms.uModelMatrix.value, step * 2);
-    },
-  },
+    }
+  }
 });
 
 let count = 0;
@@ -46,14 +41,14 @@ function addInstance() {
   const start = {
     x: getRandom(1),
     y: getRandom(1),
-    z: getRandom(1),
+    z: getRandom(1)
   };
 
   // Base end position (center of the cube)
   const end = {
     x: getRandom(1),
     y: getRandom(1),
-    z: getRandom(1),
+    z: getRandom(1)
   };
 
   // Every attribute must have:
@@ -64,23 +59,23 @@ function addInstance() {
     {
       name: 'aPositionStart',
       data: () => [start.x + getRandom(0.1), start.y + getRandom(0.1), start.z + getRandom(0.1)],
-      size: 3,
+      size: 3
     },
     {
       name: 'aPositionEnd',
       data: () => [end.x + getRandom(0.1), end.y + getRandom(0.1), end.z + getRandom(0.1)],
-      size: 3,
+      size: 3
     },
     {
       name: 'aColor',
       data: () => colors[count % 4],
-      size: 3,
+      size: 3
     },
     {
       name: 'aOffset',
       data: i => [i * ((1 - duration) / (multiplier - 1))],
-      size: 1,
-    },
+      size: 1
+    }
   ];
 
   // Every uniform must have:
@@ -90,8 +85,8 @@ function addInstance() {
   const uniforms = {
     uProgress: {
       type: 'float',
-      value: 0.0,
-    },
+      value: 0.0
+    }
   };
 
   // Vertex shader used to calculate the position
@@ -145,13 +140,13 @@ function addInstance() {
     vertex,
     fragment,
     uniforms,
-    onRender: (r) => {
+    onRender: r => {
       const { uProgress } = r.uniforms;
       uProgress.value += forward ? step : -step;
 
       if (uProgress.value >= 1) forward = false;
       else if (uProgress.value <= 0) forward = true;
-    },
+    }
   });
 }
 
