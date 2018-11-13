@@ -10,7 +10,7 @@ const colors = [[255, 108, 0], [83, 109, 254], [29, 233, 182], [253, 216, 53]].m
 );
 
 // Boolean to toggle dynamic attributes
-const dynamicAttributes = false;
+const dynamicAttributes = true;
 
 // Update value for every frame
 const step = 0.01;
@@ -95,8 +95,6 @@ function addInstance() {
   // Vertex shader used to calculate the position
   const vertex = `
     attribute vec3 aPositionStart;
-    attribute vec3 aControlPointOne;
-    attribute vec3 aControlPointTwo;
     attribute vec3 aPositionEnd;
     attribute vec3 aPosition;
     attribute vec3 aColor;
@@ -137,7 +135,7 @@ function addInstance() {
   let forward = true;
 
   // Add an instance to the renderer
-  const instance = phenomenon.add(count, {
+  phenomenon.add(count, {
     attributes,
     multiplier,
     vertex,
@@ -149,24 +147,23 @@ function addInstance() {
 
       if (uProgress.value >= 1) {
         if (dynamicAttributes) {
-          const b = {
+          const newEnd = {
             x: getRandom(1),
             y: getRandom(1),
             z: getRandom(1)
           };
-          const e = {
-            x: getRandom(1),
-            y: getRandom(1),
-            z: getRandom(1)
-          };
-          instance.prepareAttribute({
-            name: 'aPositionEnd',
-            data: () => [b.x + getRandom(0.1), b.y + getRandom(0.1), b.z + getRandom(0.1)],
+          r.prepareBuffer({
+            name: 'aPositionStart',
+            data: r.attributes[1].data,
             size: 3
           });
-          instance.prepareAttribute({
-            name: 'aPositionStart',
-            data: () => [e.x + getRandom(0.1), e.y + getRandom(0.1), e.z + getRandom(0.1)],
+          r.prepareAttribute({
+            name: 'aPositionEnd',
+            data: () => [
+              newEnd.x + getRandom(0.1),
+              newEnd.y + getRandom(0.1),
+              newEnd.z + getRandom(0.1)
+            ],
             size: 3
           });
           uProgress.value = 0;
@@ -178,9 +175,6 @@ function addInstance() {
   });
 }
 
-for (let i = 0; i < 20; i += 1) {
-  // Delay the creation of each instance
-  setTimeout(() => {
-    addInstance();
-  }, 100 * i);
+for (let i = 0; i < 10; i += 1) {
+  addInstance();
 }

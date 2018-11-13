@@ -139,7 +139,8 @@ class Instance {
         }
       }
     }
-    this.prepareBuffer(Object.assign(attribute, { data: attributeBufferData }));
+    this.attributes[this.attributeKeys.indexOf(attribute.name)].data = attributeBufferData;
+    this.prepareBuffer(this.attributes[this.attributeKeys.indexOf(attribute.name)]);
   }
 
   /**
