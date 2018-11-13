@@ -1,3 +1,5 @@
+const positionMap = ['x', 'y', 'z'];
+
 /**
  * Class representing an instance.
  */
@@ -14,7 +16,8 @@ class Instance {
       mode: 0,
       modifiers: {},
       attributes: [],
-      multiplier: 1
+      multiplier: 1,
+      buffers: []
     });
 
     // Assign optional parameters
@@ -24,7 +27,6 @@ class Instance {
     this.prepareProgram();
     this.prepareUniforms();
     this.prepareAttributes();
-    this.prepareBuffers();
   }
 
   /**
@@ -79,79 +81,83 @@ class Instance {
    * Create buffer attributes.
    */
   prepareAttributes() {
-    const { geometry, attributes, multiplier } = this;
-    const { vertices, normal } = geometry;
-    const positionMap = ['x', 'y', 'z'];
-    if (typeof vertices !== 'undefined') {
+    if (typeof this.geometry.vertices !== 'undefined') {
       this.attributes.push({
         name: 'aPosition',
         size: 3
       });
     }
-    if (typeof normal !== 'undefined') {
+    if (typeof this.geometry.normal !== 'undefined') {
       this.attributes.push({
         name: 'aNormal',
         size: 3
       });
     }
+    this.attributeKeys = [];
     // Convert all attributes to be useable in the shader
-    for (let i = 0; i < attributes.length; i += 1) {
-      // Obtain the current attribute
-      const attribute = attributes[i];
-      // Create an array for the attribute to store data
-      const attributeBufferData = new Float32Array(multiplier * vertices.length * attribute.size);
-      // Repeat the process for the provided multiplier
-      for (let j = 0; j < multiplier; j += 1) {
-        // Set data used as default or the attribute modifier
-        const data = attribute.data && attribute.data(j, multiplier);
-        // Calculate the offset for the right place in the array
-        let offset = j * vertices.length * attribute.size;
-        // Loop over vertices length
-        for (let k = 0; k < vertices.length; k += 1) {
-          // Loop over attribute size
-          for (let l = 0; l < attribute.size; l += 1) {
-            // Check if a modifier is provided
-            const modifier = this.modifiers[attribute.name];
-            if (typeof modifier !== 'undefined') {
-              // Handle attribute modifier
-              attributeBufferData[offset] = modifier(data, k, l, this);
-            } else if (attribute.name === 'aPosition') {
-              // Handle position values
-              attributeBufferData[offset] = vertices[k][positionMap[l]];
-            } else if (attribute.name === 'aNormal') {
-              // Handle normal values
-              attributeBufferData[offset] = normal[k][positionMap[l]];
-            } else {
-              // Handle other attributes
-              attributeBufferData[offset] = data[l];
-            }
-            offset += 1;
-          }
-        }
-      }
-      this.attributes[i].data = attributeBufferData;
+    for (let i = 0; i < this.attributes.length; i += 1) {
+      this.attributeKeys.push(this.attributes[i].name);
+      this.prepareAttribute(this.attributes[i]);
     }
   }
 
   /**
-   * Create a render buffer.
+   * Prepare a single attribute.
+   * @param {object} attribute
    */
-  prepareBuffers() {
-    this.buffers = [];
-
-    for (let i = 0; i < this.attributes.length; i += 1) {
-      const { data, name, size } = this.attributes[i];
-
-      const buffer = this.gl.createBuffer();
-      this.gl.bindBuffer(34962, buffer);
-      this.gl.bufferData(34962, data, 35044);
-
-      const location = this.gl.getAttribLocation(this.program, name);
-      this.gl.enableVertexAttribArray(location);
-      this.gl.vertexAttribPointer(location, size, 5126, false, false, 0);
-
-      this.buffers.push({ buffer, location, size });
+  prepareAttribute(attribute) {
+    const { geometry, multiplier } = this;
+    const { vertices, normal } = geometry;
+    // Create an array for the attribute to store data
+    const attributeBufferData = new Float32Array(multiplier * vertices.length * attribute.size);
+    // Repeat the process for the provided multiplier
+    for (let j = 0; j < multiplier; j += 1) {
+      // Set data used as default or the attribute modifier
+      const data = attribute.data && attribute.data(j, multiplier);
+      // Calculate the offset for the right place in the array
+      let offset = j * vertices.length * attribute.size;
+      // Loop over vertices length
+      for (let k = 0; k < vertices.length; k += 1) {
+        // Loop over attribute size
+        for (let l = 0; l < attribute.size; l += 1) {
+          // Check if a modifier is provided
+          const modifier = this.modifiers[attribute.name];
+          if (typeof modifier !== 'undefined') {
+            // Handle attribute modifier
+            attributeBufferData[offset] = modifier(data, k, l, this);
+          } else if (attribute.name === 'aPosition') {
+            // Handle position values
+            attributeBufferData[offset] = vertices[k][positionMap[l]];
+          } else if (attribute.name === 'aNormal') {
+            // Handle normal values
+            attributeBufferData[offset] = normal[k][positionMap[l]];
+          } else {
+            // Handle other attributes
+            attributeBufferData[offset] = data[l];
+          }
+          offset += 1;
+        }
+      }
     }
+    this.prepareBuffer(Object.assign(attribute, { data: attributeBufferData }));
+  }
+
+  /**
+   * Create a buffer with an attribute.
+   * @param {object} attribute
+   */
+  prepareBuffer(attribute) {
+    const { data, name, size } = attribute;
+
+    const buffer = this.gl.createBuffer();
+    this.gl.bindBuffer(34962, buffer);
+    this.gl.bufferData(34962, data, 35044);
+
+    const location = this.gl.getAttribLocation(this.program, name);
+    this.gl.enableVertexAttribArray(location);
+    this.gl.vertexAttribPointer(location, size, 5126, false, false, 0);
+
+    this.buffers[this.attributeKeys.indexOf(attribute.name)] = { buffer, location, size };
   }
 
   /**

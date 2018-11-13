@@ -9,6 +9,9 @@ const colors = [[255, 108, 0], [83, 109, 254], [29, 233, 182], [253, 216, 53]].m
   rgbToHsl(color)
 );
 
+// Boolean to toggle dynamic attributes
+const dynamicAttributes = false;
+
 // Update value for every frame
 const step = 0.01;
 
@@ -134,7 +137,7 @@ function addInstance() {
   let forward = true;
 
   // Add an instance to the renderer
-  phenomenon.add(count, {
+  const instance = phenomenon.add(count, {
     attributes,
     multiplier,
     vertex,
@@ -144,20 +147,36 @@ function addInstance() {
       const { uProgress } = r.uniforms;
       uProgress.value += forward ? step : -step;
 
-      if (uProgress.value >= 1) forward = false;
-      else if (uProgress.value <= 0) forward = true;
+      if (uProgress.value >= 1) {
+        if (dynamicAttributes) {
+          const b = {
+            x: getRandom(1),
+            y: getRandom(1),
+            z: getRandom(1)
+          };
+          const e = {
+            x: getRandom(1),
+            y: getRandom(1),
+            z: getRandom(1)
+          };
+          instance.prepareAttribute({
+            name: 'aPositionEnd',
+            data: () => [b.x + getRandom(0.1), b.y + getRandom(0.1), b.z + getRandom(0.1)],
+            size: 3
+          });
+          instance.prepareAttribute({
+            name: 'aPositionStart',
+            data: () => [e.x + getRandom(0.1), e.y + getRandom(0.1), e.z + getRandom(0.1)],
+            size: 3
+          });
+          uProgress.value = 0;
+        } else {
+          forward = false;
+        }
+      } else if (uProgress.value <= 0) forward = true;
     }
   });
 }
-
-function removeInstance() {
-  if (count === 0) return;
-  phenomenon.remove(count);
-  count -= 1;
-}
-
-document.querySelector('.add').addEventListener('click', addInstance);
-document.querySelector('.remove').addEventListener('click', removeInstance);
 
 for (let i = 0; i < 20; i += 1) {
   // Delay the creation of each instance
