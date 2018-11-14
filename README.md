@@ -16,6 +16,7 @@ Phenomenon is a very small, low-level WebGL library that provides the essentials
 - Low-level & highly configurable
 - Helper functions with options
 - Add & destroy instances dynamically
+- Dynamic attribute switching
 
 *Want to see some magic right away? Have a look <a href="https://codepen.io/collection/AOpMrm/">here</a>!*
 
@@ -140,6 +141,14 @@ Remove an instance from the scene (and from memory) by its key.
 ### .destroy()
 
 Remove all instances and the renderer itself. The canvas element will remain in the DOM.
+
+### .prepareAttribute(attribute)
+
+Dynamically override an attribute with the same logic that is used during initial creation of the instance. The function requires an object with a name, size and data attribute.
+
+> Note: The calculation of the data function is done on the CPU. Be sure to check for dropped frames with a lot of particles.
+
+Attributes can also be switched. In the demo this is used to continue with a new start position identical to the end position. This can be achieved with `.prepareBuffer(attribute)` in which the data function is replaced with the final array.
 
 ## Examples
 
