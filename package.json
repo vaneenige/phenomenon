@@ -5,12 +5,12 @@
   "main": "dist/phenomenon.mjs",
   "unpkg": "dist/phenomenon.umd.js",
   "scripts": {
-    "start": "http-server demo --silent & npm run watch",
+    "start": "http-server demo --silent & $npm_execpath run watch",
     "watch": "microbundle watch --format umd --entry demo/src/index.js --output demo/dist/bundle.js",
     "build": "microbundle --name Phenomenon --format es,umd --sourcemap false",
     "eslint": "eslint src/index.js",
     "test": "karmatic",
-    "prepare": "npm run eslint && npm run test && npm run build"
+    "prepare": "$npm_execpath run eslint && $npm_execpath run test && $npm_execpath run build"
   },
   "repository": {
     "type": "git",
