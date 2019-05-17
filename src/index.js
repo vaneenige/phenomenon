@@ -17,7 +17,7 @@ class Instance {
       modifiers: {},
       attributes: [],
       multiplier: 1,
-      buffers: []
+      buffers: [],
     });
 
     // Assign optional parameters
@@ -84,13 +84,13 @@ class Instance {
     if (typeof this.geometry.vertices !== 'undefined') {
       this.attributes.push({
         name: 'aPosition',
-        size: 3
+        size: 3,
       });
     }
     if (typeof this.geometry.normal !== 'undefined') {
       this.attributes.push({
         name: 'aNormal',
-        size: 3
+        size: 3,
       });
     }
     this.attributeKeys = [];
@@ -224,7 +224,7 @@ class Renderer {
     canvas = document.querySelector('canvas'),
     context = {},
     contextType = 'experimental-webgl',
-    settings = {}
+    settings = {},
   } = {}) {
     // Get context with optional parameters
     const gl = canvas.getContext(
@@ -232,7 +232,7 @@ class Renderer {
       Object.assign(
         {
           alpha: false,
-          antialias: false
+          antialias: false,
         },
         context
       )
@@ -244,14 +244,14 @@ class Renderer {
       canvas,
       uniforms: {},
       instances: new Map(),
-      shouldRender: true
+      shouldRender: true,
     });
 
     // Assign default parameters
     Object.assign(this, {
       devicePixelRatio: 1,
       clearColor: [1, 1, 1, 1],
-      position: { x: 0, y: 0, z: 2 }
+      position: { x: 0, y: 0, z: 2 },
     });
 
     // Assign optional parameters
@@ -265,7 +265,7 @@ class Renderer {
       vec4: (loc, val) => gl.uniform4fv(loc, val),
       mat2: (loc, val) => gl.uniformMatrix2fv(loc, false, val),
       mat3: (loc, val) => gl.uniformMatrix3fv(loc, false, val),
-      mat4: (loc, val) => gl.uniformMatrix4fv(loc, false, val)
+      mat4: (loc, val) => gl.uniformMatrix4fv(loc, false, val),
     };
 
     // Enable depth
@@ -332,17 +332,17 @@ class Renderer {
 
     this.uniforms.uProjectionMatrix = {
       type: 'mat4',
-      value: projectionMatrix
+      value: projectionMatrix,
     };
 
     this.uniforms.uViewMatrix = {
       type: 'mat4',
-      value: viewMatrix
+      value: viewMatrix,
     };
 
     this.uniforms.uModelMatrix = {
       type: 'mat4',
-      value: modelMatrix
+      value: modelMatrix,
     };
   }
 
@@ -386,7 +386,7 @@ class Renderer {
 
     Object.assign(settings, {
       gl: this.gl,
-      uniformMap: this.uniformMap
+      uniformMap: this.uniformMap,
     });
 
     const instance = new Instance(settings);
