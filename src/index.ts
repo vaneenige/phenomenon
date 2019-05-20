@@ -60,7 +60,7 @@ class Instance {
   public multiplier: number;
   public modifiers: Array<Function>;
   public buffers: Array<BufferProps>;
-  public uniformMap: Object;
+  public uniformMap: object;
   public mode: number;
   public onRender?: Function;
 
@@ -270,7 +270,7 @@ class Renderer {
   public clearColor: Array<GLclampf>;
   public onRender: Function;
   public onSetup: Function;
-  public uniformMap: Object;
+  public uniformMap: object;
   public gl: WebGLRenderingContext;
   public canvas: HTMLCanvasElement;
   public devicePixelRatio: number;
