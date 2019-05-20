@@ -6,6 +6,7 @@
 [![gzip size](http://img.badgesize.io/https://unpkg.com/phenomenon/dist/phenomenon.umd.js?compression=gzip)](https://unpkg.com/phenomenon)
 [![license](https://img.shields.io/npm/l/phenomenon.svg)](https://github.com/vaneenige/phenomenon/blob/master/LICENSE)
 [![dependencies](https://img.shields.io/badge/dependencies-none-ff69b4.svg)](https://github.com/vaneenige/phenomenon/blob/master/package.json)
+[![TypeScript](https://img.shields.io/static/v1.svg?label=&message=TypeScript&color=294E80)](https://www.typescriptlang.org/)
 
 Phenomenon is a very small, low-level WebGL library that provides the essentials to deliver a high performance experience. Its core functionality is built around the idea of moving *millions of particles* around using the power of the GPU.
 

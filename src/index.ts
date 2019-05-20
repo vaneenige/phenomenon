@@ -1,14 +1,73 @@
+interface AttributeProps {
+  name: string;
+  size: number;
+  data?: any;
+}
+
+interface UniformProps {
+  type: string;
+  value: Array<number>;
+  location?: WebGLUniformLocation;
+}
+
+interface GeometryProps {
+  vertices?: Array<Array<object>>;
+  normal?: Array<Array<object>>;
+}
+
+interface BufferProps {
+  location: number;
+  buffer: WebGLBuffer;
+  size: number;
+}
+
+interface InstanceProps {
+  attributes?: Array<AttributeProps>;
+  vertex?: string;
+  fragment?: string;
+  geometry?: GeometryProps;
+  mode?: number;
+  modifiers?: object;
+  multiplier?: number;
+  uniforms: {
+    [key: string]: UniformProps;
+  };
+}
+
+interface RendererProps {
+  canvas?: HTMLCanvasElement;
+  context?: object;
+  contextType?: string;
+  settings?: object;
+}
+
 const positionMap = ['x', 'y', 'z'];
 
 /**
  * Class representing an instance.
  */
 class Instance {
+  public gl: WebGLRenderingContext;
+  public vertex: string;
+  public fragment: string;
+  public program: WebGLProgram;
+  public uniforms: {
+    [key: string]: UniformProps;
+  };
+  public geometry: GeometryProps;
+  public attributes: Array<AttributeProps>;
+  public attributeKeys: Array<string>;
+  public multiplier: number;
+  public modifiers: Array<Function>;
+  public buffers: Array<BufferProps>;
+  public uniformMap: Object;
+  public mode: number;
+  public onRender?: Function;
+
   /**
    * Create an instance.
-   * @param {object} settings
    */
-  constructor(settings) {
+  constructor(props: InstanceProps) {
     // Assign default parameters
     Object.assign(this, {
       uniforms: {},
@@ -21,7 +80,7 @@ class Instance {
     });
 
     // Assign optional parameters
-    Object.assign(this, settings);
+    Object.assign(this, props);
 
     // Prepare all required pieces
     this.prepareProgram();
@@ -31,10 +90,8 @@ class Instance {
 
   /**
    * Compile a shader.
-   * @param {number} type
-   * @param {string} source
    */
-  compileShader(type, source) {
+  compileShader(type: number, source: string) {
     const shader = this.gl.createShader(type);
     this.gl.shaderSource(shader, source);
     this.gl.compileShader(shader);
@@ -103,9 +160,8 @@ class Instance {
 
   /**
    * Prepare a single attribute.
-   * @param {object} attribute
    */
-  prepareAttribute(attribute) {
+  prepareAttribute(attribute: AttributeProps) {
     const { geometry, multiplier } = this;
     const { vertices, normal } = geometry;
     // Create an array for the attribute to store data
@@ -145,9 +201,8 @@ class Instance {
 
   /**
    * Create a buffer with an attribute.
-   * @param {object} attribute
    */
-  prepareBuffer(attribute) {
+  prepareBuffer(attribute: AttributeProps) {
     const { data, name, size } = attribute;
 
     const buffer = this.gl.createBuffer();
@@ -156,16 +211,15 @@ class Instance {
 
     const location = this.gl.getAttribLocation(this.program, name);
     this.gl.enableVertexAttribArray(location);
-    this.gl.vertexAttribPointer(location, size, 5126, false, false, 0);
+    this.gl.vertexAttribPointer(location, size, 5126, false, 0, 0);
 
     this.buffers[this.attributeKeys.indexOf(attribute.name)] = { buffer, location, size };
   }
 
   /**
    * Render the instance.
-   * @param {object} renderUniforms
    */
-  render(renderUniforms) {
+  render(renderUniforms: object) {
     const { uniforms, multiplier, gl } = this;
 
     // Use the program of the instance
@@ -176,7 +230,7 @@ class Instance {
       const { location, buffer, size } = this.buffers[i];
       gl.enableVertexAttribArray(location);
       gl.bindBuffer(34962, buffer);
-      gl.vertexAttribPointer(location, size, 5126, false, false, 0);
+      gl.vertexAttribPointer(location, size, 5126, false, 0, 0);
     }
 
     // Update the shared uniforms from the renderer
@@ -202,7 +256,7 @@ class Instance {
    */
   destroy() {
     for (let i = 0; i < this.buffers.length; i += 1) {
-      this.gl.deleteBuffer(this.buffers.buffer);
+      this.gl.deleteBuffer(this.buffers[i].buffer);
     }
     this.gl.deleteProgram(this.program);
     this.gl = null;
@@ -213,21 +267,37 @@ class Instance {
  * Class representing a Renderer.
  */
 class Renderer {
+  public clearColor: Array<GLclampf>;
+  public onRender: Function;
+  public onSetup: Function;
+  public uniformMap: Object;
+  public gl: WebGLRenderingContext;
+  public canvas: HTMLCanvasElement;
+  public devicePixelRatio: number;
+  public instances: Map<string, Instance>;
+  public position: {
+    x: number;
+    y: number;
+    z: number;
+  };
+  public uniforms: {
+    [key: string]: UniformProps;
+  };
+  public shouldRender: boolean;
+
   /**
    * Create a renderer.
-   * @param {HTMLElement} canvas - The element on which the scene will be rendered.
-   * @param {object} context - Options used when getting the context.
-   * @param {string} contextType - The context identifier defining the drawing context.
-   * @param {object} settings - Options used when creating the renderer.
    */
-  constructor({
-    canvas = document.querySelector('canvas'),
-    context = {},
-    contextType = 'experimental-webgl',
-    settings = {},
-  } = {}) {
+  constructor(props: RendererProps) {
+    const {
+      canvas = document.querySelector('canvas'),
+      context = {},
+      contextType = 'experimental-webgl',
+      settings = {},
+    } = props || {};
+
     // Get context with optional parameters
-    const gl = canvas.getContext(
+    const gl = <WebGLRenderingContext>canvas.getContext(
       contextType,
       Object.assign(
         {
@@ -274,6 +344,7 @@ class Renderer {
 
     // Set clear values
     if (gl.getContextAttributes().alpha === false) {
+      // @ts-ignore
       gl.clearColor(...this.clearColor);
       gl.clearDepth(1.0);
     }
@@ -348,9 +419,8 @@ class Renderer {
 
   /**
    * Toggle the active state of the renderer.
-   * @param {bool} shouldRender
    */
-  toggle(shouldRender) {
+  toggle(shouldRender: boolean) {
     if (shouldRender === this.shouldRender) return;
     this.shouldRender = typeof shouldRender !== 'undefined' ? shouldRender : !this.shouldRender;
     if (this.shouldRender) this.render();
@@ -373,16 +443,17 @@ class Renderer {
 
   /**
    * Add an instance to the renderer.
-   * @param {string} key
-   * @param {object} instanceParams
    */
-  add(key, settings = {}) {
-    const instanceSettings = settings;
+  add(key: string, settings: InstanceProps) {
+    if (typeof settings === 'undefined') {
+      settings = { uniforms: {} };
+    }
 
-    instanceSettings.uniforms = Object.assign(
-      settings.uniforms || {},
-      JSON.parse(JSON.stringify(this.uniforms))
-    );
+    if (typeof settings.uniforms === 'undefined') {
+      settings.uniforms = {};
+    }
+
+    Object.assign(settings.uniforms, JSON.parse(JSON.stringify(this.uniforms)));
 
     Object.assign(settings, {
       gl: this.gl,
@@ -397,9 +468,8 @@ class Renderer {
 
   /**
    * Remove an instance from the renderer.
-   * @param {string} key
    */
-  remove(key) {
+  remove(key: string) {
     const instance = this.instances.get(key);
     if (typeof instance === 'undefined') return;
     instance.destroy();

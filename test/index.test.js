@@ -1,6 +1,6 @@
 /* global expect */
 
-import Phenomenon from '../src/index';
+import Phenomenon from '../dist/phenomenon';
 
 let phenomenon;
 
@@ -61,7 +61,7 @@ describe('phenomenon', () => {
     });
 
     describe('render()', () => {
-      it('should call the render hooks if provided', (done) => {
+      it('should call the render hooks if provided', done => {
         phenomenon = new Phenomenon({
           settings: {
             onRender: () => {
@@ -73,7 +73,7 @@ describe('phenomenon', () => {
     });
 
     describe('add()', () => {
-      it('should add a new instance by its key', (done) => {
+      it('should add a new instance by its key', done => {
         phenomenon.add('instance');
         expect(phenomenon.instances.size).toBe(1);
         expect(phenomenon.instances.get('instance')).toBeDefined();
@@ -87,12 +87,12 @@ describe('phenomenon', () => {
 
       it('should return the instance after creation', () => {
         const instance = phenomenon.add('instance');
-        expect(instance.constructor.name).toBe('Instance');
+        expect(instance.constructor.name).toBe('e');
       });
     });
 
     describe('remove()', () => {
-      it('should remove an instance by its key', (done) => {
+      it('should remove an instance by its key', done => {
         phenomenon.add('instance');
         phenomenon.remove('instance');
         expect(phenomenon.instances.size).toBe(0);

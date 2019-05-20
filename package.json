@@ -1,9 +1,11 @@
 {
   "name": "phenomenon",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "A fast 2kB low-level WebGL API.",
+  "source": "src/index.ts",
   "main": "dist/phenomenon.mjs",
   "unpkg": "dist/phenomenon.umd.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "start": "http-server demo --silent & $npm_execpath run watch",
     "watch": "microbundle watch --format umd --entry demo/src/index.js --output demo/dist/bundle.js",
