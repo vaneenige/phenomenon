@@ -274,6 +274,7 @@ class Renderer {
   public gl: WebGLRenderingContext;
   public canvas: HTMLCanvasElement;
   public devicePixelRatio: number;
+  public clip: Array<number>;
   public instances: Map<string, Instance>;
   public position: {
     x: number;
@@ -381,8 +382,8 @@ class Renderer {
     const projectionMatrix = [
       0.5 / angle, 0, 0, 0,
       0, 0.5 * (ratio / angle), 0, 0,
-      0, 0, -(100 + 0.001) / (100 - 0.001), -1, 0, 0,
-      -2 * 100 * (0.001 / (100 - 0.001)), 0,
+      0, 0, -(this.clip[1] + this.clip[0]) / (this.clip[1] - this.clip[0]), -1, 0, 0,
+      -2 * this.clip[1] * (this.clip[0] / (this.clip[1] - this.clip[0])), 0,
     ];
 
     // prettier-ignore
