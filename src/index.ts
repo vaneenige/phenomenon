@@ -323,6 +323,7 @@ class Renderer {
       devicePixelRatio: 1,
       clearColor: [1, 1, 1, 1],
       position: { x: 0, y: 0, z: 2 },
+      clip: [0.001, 100]
     });
 
     // Assign optional parameters
