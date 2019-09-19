@@ -1,6 +1,6 @@
 {
   "name": "phenomenon",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "description": "A fast 2kB low-level WebGL API.",
   "source": "src/index.ts",
   "main": "dist/phenomenon.mjs",
