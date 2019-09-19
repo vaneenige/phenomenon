@@ -85,6 +85,7 @@ Overrides that can be used to alter the behaviour of the experience.
 | ---------------------------------------- | ---------- | --------------- | --------------------------------------------------------------------------- |
 | devicePixelRatio                         | `number`   | `1`             | The resolution multiplier by which the scene is rendered relative to the canvas' resolution. Use `window.devicePixelRatio` for the highest possible quality, `1` for the best performance. |
 | clearColor                               | `array`    | `[1,1,1,1]`     | The color in `rgba` that is used as the background of the scene. |
+| clip                                     | `array`    | `[0.001, 100]`  | The near and far clip plane in 3D space. |
 | position                                 | `number`   | `{x:0,y:0,z:2}` | The distance in 3D space between the center of the scene and the camera. |
 | shouldRender                             | `boolean`  | `true`          | A boolean indicating whether the scene should start rendering automatically. |
 | uniforms                                 | `object`   | `{}`            | Shared values between all instances that can be updated at any given moment. By default this feature is used to render all the instances with the same `uProjectionMatrix`, `uModelMatrix` and `uViewMatrix`. It's also useful for moving everything around with the same progress value; `uProgress`. |
