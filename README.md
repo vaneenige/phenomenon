@@ -91,6 +91,8 @@ Overrides that can be used to alter the behaviour of the experience.
 | uniforms                                 | `object`   | `{}`            | Shared values between all instances that can be updated at any given moment. By default this feature is used to render all the instances with the same `uProjectionMatrix`, `uModelMatrix` and `uViewMatrix`. It's also useful for moving everything around with the same progress value; `uProgress`. |
 | onSetup(gl)                              | `function` | `undefined`     | A setup hook that is called before first render which can be used for gl context changes. |
 | onRender(renderer)                       | `function` | `undefined`     | A render hook that is invoked after every rendered frame. Use this to update `renderer.uniforms`. |
+| debug                                    | `boolean`  | `false`         | Whether or not the console should log shader compilation warnings. |
+
 
 ### .resize()
 

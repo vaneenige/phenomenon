@@ -39,6 +39,7 @@ interface RendererProps {
   context?: object;
   contextType?: string;
   settings?: object;
+  debug?: boolean;
 }
 
 const positionMap = ['x', 'y', 'z'];
@@ -285,6 +286,7 @@ class Renderer {
     [key: string]: UniformProps;
   };
   public shouldRender: boolean;
+  public debug: boolean;
 
   /**
    * Create a renderer.
@@ -295,6 +297,7 @@ class Renderer {
       context = {},
       contextType = 'experimental-webgl',
       settings = {},
+      debug = false,
     } = props || {};
 
     // Get context with optional parameters
@@ -323,7 +326,8 @@ class Renderer {
       devicePixelRatio: 1,
       clearColor: [1, 1, 1, 1],
       position: { x: 0, y: 0, z: 2 },
-      clip: [0.001, 100]
+      clip: [0.001, 100],
+      debug,
     });
 
     // Assign optional parameters
@@ -464,6 +468,24 @@ class Renderer {
 
     const instance = new Instance(settings);
     this.instances.set(key, instance);
+
+    if (this.debug) {
+      // debug vertex shader
+      const vertexDebug = this.gl.createShader(this.gl.VERTEX_SHADER);
+      this.gl.shaderSource(vertexDebug, settings.vertex);
+      this.gl.compileShader(vertexDebug);
+      if (!this.gl.getShaderParameter(vertexDebug, this.gl.COMPILE_STATUS)) {
+        console.error(this.gl.getShaderInfoLog(vertexDebug));
+      }
+
+      // debug fragment shader
+      const fragmentDebug = this.gl.createShader(this.gl.FRAGMENT_SHADER);
+      this.gl.shaderSource(fragmentDebug, settings.fragment);
+      this.gl.compileShader(fragmentDebug);
+      if (!this.gl.getShaderParameter(fragmentDebug, this.gl.COMPILE_STATUS)) {
+        console.error(this.gl.getShaderInfoLog(fragmentDebug));
+      }
+    }
 
     return instance;
   }
