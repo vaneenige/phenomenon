@@ -504,6 +504,9 @@ class Renderer {
    * Destroy the renderer and its instances.
    */
   destroy() {
+    // Handle cleanup of resize events
+    window.removeEventListener('resize', () => this.resize());
+    
     this.instances.forEach((instance, key) => {
       instance.destroy();
       this.instances.delete(key);
